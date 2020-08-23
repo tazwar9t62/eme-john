@@ -20,4 +20,5 @@
     background-color:goldenrod;
     border: 1px solid darkgoldenrod;
     border-radius: 7px;
+    cursor: pointer;
 }

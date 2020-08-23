@@ -8,8 +8,11 @@ const Shop = () => {
     let first10 = fakeData.slice(0, 10);
     // console.log(first10);
     let [products, setProducts] = useState(first10);
+    let [cart, setCart] = useState([]);
     const handleAddButton = (product) => {
         console.log("product added to cart", product);
+        let newCart = [...cart, product];
+        setCart(newCart);
     }
     return (
         <div className="shop-container">
@@ -25,6 +28,7 @@ const Shop = () => {
             </div>
             <div className="cart-container">
                 <h3>This is demo cart</h3>
+                <h5>Total card number {cart.length}</h5>
             </div>
 
         </div>
