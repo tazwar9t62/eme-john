@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import fakeData from '../../fakeData'
 import './Shop.css'
 import Product from '../Product/Product';
+import Cart from '../Cart/Cart';
 
 const Shop = () => {
     // console.log(fakeData);
@@ -11,7 +12,7 @@ const Shop = () => {
     let [cart, setCart] = useState([]);
     const handleAddButton = (product) => {
         console.log("product added to cart", product);
-        let newCart = [...cart, product];
+        let newCart = [...cart, product]; // ...cart to copy old cart
         setCart(newCart);
     }
     return (
@@ -27,8 +28,7 @@ const Shop = () => {
 
             </div>
             <div className="cart-container">
-                <h3>This is demo cart</h3>
-                <h5>Total card number {cart.length}</h5>
+                <Cart cart={cart}></Cart>
             </div>
 
         </div>
