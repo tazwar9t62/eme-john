@@ -8,12 +8,18 @@ const Shop = () => {
     let first10 = fakeData.slice(0, 10);
     // console.log(first10);
     let [products, setProducts] = useState(first10);
+    const handleAddButton = (product) => {
+        console.log("product added to cart", product);
+    }
     return (
         <div className="shop-container">
             <div className="product-container">
 
                 {
-                    products.map(singleProduct => <Product productDetails={singleProduct}></Product>)
+                    products.map(singleProduct => <Product
+                        productDetails={singleProduct}
+                        handleAddButton={handleAddButton}
+                    ></Product>)
                 }
 
             </div>
