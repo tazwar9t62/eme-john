@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import fakeData from '../../fakeData'
+import './Shop.css'
+import Product from '../Product/Product';
 
 const Shop = () => {
     // console.log(fakeData);
@@ -7,12 +9,18 @@ const Shop = () => {
     // console.log(first10);
     let [products, setProducts] = useState(first10);
     return (
-        <div>
-            <ul>
+        <div className="shop-container">
+            <div className="product-container">
+
                 {
-                    products.map(singleProduct => <li>{singleProduct.name}</li>)
+                    products.map(singleProduct => <Product productDetails={singleProduct}></Product>)
                 }
-            </ul>
+
+            </div>
+            <div className="cart-container">
+                <h3>This is demo cart</h3>
+            </div>
+
         </div>
     );
 };
