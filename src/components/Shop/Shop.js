@@ -11,7 +11,7 @@ const Shop = () => {
     let [products, setProducts] = useState(first10);
     let [cart, setCart] = useState([]);
     const handleAddButton = (product) => {
-        console.log("product added to cart", product);
+        // console.log("product added to cart", product);
         let newCart = [...cart, product]; // ...cart to copy old cart
         setCart(newCart);
     }
