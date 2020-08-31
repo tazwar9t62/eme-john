@@ -13,10 +13,20 @@ const Shop = () => {
   let [cart, setCart] = useState([]);
   const handleAddButton = (product) => {
     // console.log("product added to cart", product);
-    let newCart = [...cart, product]; // ...cart to copy old cart
+    let toBeaddedKey = product.key;
+    let sameProduct = cart.find((pd) => pd.key === toBeaddedKey);
+    let count = 1;
+    let newCart;
+    if (sameProduct) {
+      count = sameProduct.quantity + 1;
+      sameProduct.quantity = count;
+      let others = cart.filter((pd) => pd.key !== toBeaddedKey);
+      newCart = [...others, sameProduct];
+    } else {
+      product.quantity = 1;
+      newCart = [...cart, product];
+    }
     setCart(newCart);
-    let sameProduct = newCart.map((pd) => pd.key === product.key);
-    let count = sameProduct.length;
     addToDatabaseCart(product.key, count);
   };
   return (
