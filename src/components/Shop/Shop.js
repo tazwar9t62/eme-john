@@ -3,7 +3,11 @@ import fakeData from "../../fakeData";
 import "./Shop.css";
 import Product from "../Product/Product";
 import Cart from "../Cart/Cart";
-import { addToDatabaseCart } from "../../utilities/databaseManager";
+import {
+  addToDatabaseCart,
+  getDatabaseCart,
+} from "../../utilities/databaseManager";
+import { useEffect } from "react";
 
 const Shop = () => {
   // console.log(fakeData);
@@ -11,6 +15,16 @@ const Shop = () => {
   // console.log(first10);
   let [products, setProducts] = useState(first10);
   let [cart, setCart] = useState([]);
+  useEffect(() => {
+    let savedCart = getDatabaseCart();
+    let productKeys = Object.keys(savedCart);
+    let previousCart = productKeys.map((existingKey) => {
+      let product = fakeData.find((pd) => pd.key === existingKey);
+      product.quantity = savedCart[existingKey];
+      return product;
+    });
+    setCart(previousCart);
+  }, []);
   const handleAddButton = (product) => {
     // console.log("product added to cart", product);
     let toBeaddedKey = product.key;
