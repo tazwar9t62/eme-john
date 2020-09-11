@@ -7,7 +7,7 @@ const ProductReview = (props) => {
   let reviewStyle = {
     padding: "10px",
     marginLeft: "150px",
-    borderBottom: "1px solid lightgray",
+    borderBottom: "1px solid lightGray",
   };
   return (
     <div style={reviewStyle}>

@@ -1,10 +1,10 @@
 import React from "react";
+import error from "../../images/error.gif";
 
 const Error = () => {
   return (
     <div>
-      <h1>page not found bro</h1>
-      <h2>Error 404</h2>
+      <img style={{ width: "100%" }} src={error} alt="" />
     </div>
   );
 };
