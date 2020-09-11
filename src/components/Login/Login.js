@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from "./Firebase.config";
 import SignInForm from "../SignInForm/SignInForm";
+import { userContext } from "../../App";
+import { useHistory, useLocation } from "react-router-dom";
 firebase.initializeApp(firebaseConfig);
 
 function Login() {
+  let [loggesInUser, setLoggedInUser] = useContext(userContext);
+  let history = useHistory();
+  let location = useLocation();
+  let { from } = location.state || { from: { pathname: "/" } };
   let [user, setUser] = useState({
     isSignedIn: false,
     email: "",
@@ -22,6 +28,8 @@ function Login() {
         var token = result.credential.accessToken;
         // The signed-in user info.
         var user = result.user;
+        setLoggedInUser(result.user);
+        history.replace(from);
         // ...
       })
       .catch(function (error) {
@@ -35,7 +43,7 @@ function Login() {
         // ...
       });
   };
-  let handleSignIn = () => {
+  let handleGoogleSignIn = () => {
     firebase
       .auth()
       .signInWithPopup(provider)
@@ -49,6 +57,8 @@ function Login() {
         };
         // console.log(result);
         setUser(signedInUser);
+        setLoggedInUser(result.user);
+        history.replace(from);
       })
       .catch(function (error) {
         // Handle Errors here.
@@ -85,7 +95,7 @@ function Login() {
       {user.isSignedIn ? (
         <button onClick={handleSignOut}>Sign out</button>
       ) : (
-        <button onClick={handleSignIn}>Sign in using Google</button>
+        <button onClick={handleGoogleSignIn}>Sign in using Google</button>
       )}
 
       <button onClick={handleFbSignIn}>Sign in using Facebook</button>

@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import * as firebase from "firebase/app";
 import { userContext } from "../../App";
+import { useHistory, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -47,6 +48,9 @@ export default function SignInForm() {
   });
 
   let [loggesInUser, setLoggedInUser] = useContext(userContext);
+  let history = useHistory();
+  let location = useLocation();
+  let { from } = location.state || { from: { pathname: "/" } };
 
   let handleOnChange = (event) => {
     //   console.log(event.target.name, event.target.value);
@@ -76,6 +80,8 @@ export default function SignInForm() {
           newUserInfo.error = "";
           setUser(newUserInfo);
           updateUserName(user.username);
+          setLoggedInUser(res.user);
+          history.replace(from);
         })
         .catch((error) => {
           // Handle Errors here.
@@ -97,7 +103,10 @@ export default function SignInForm() {
           newUserInfo.success = true;
           newUserInfo.error = "";
           setUser(newUserInfo);
-          setLoggedInUser(newUserInfo);
+          //   setLoggedInUser(newUserInfo);
+          setLoggedInUser(res.user);
+          history.replace(from);
+
           console.log("Signed in user info: ", res.user);
         })
         .catch(function (error) {
