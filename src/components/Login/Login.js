@@ -19,6 +19,7 @@ function Login() {
   });
   let provider = new firebase.auth.GoogleAuthProvider();
   let fbProvider = new firebase.auth.FacebookAuthProvider();
+  var githubProvider = new firebase.auth.GithubAuthProvider();
   let handleFbSignIn = () => {
     firebase
       .auth()
@@ -26,8 +27,17 @@ function Login() {
       .then(function (result) {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         var token = result.credential.accessToken;
+        let { displayName, photoURL, email } = result.user;
+        let signedInUser = {
+          isSignedIn: true,
+          email: email,
+          photo: photoURL,
+          name: displayName,
+        };
         // The signed-in user info.
-        var user = result.user;
+        // var user = result.user;
+        console.log("after fb login", result.user);
+        setUser(signedInUser);
         setLoggedInUser(result.user);
         history.replace(from);
         // ...
@@ -89,24 +99,65 @@ function Login() {
         // An error happened.
       });
   };
+  let handleGithubSignIn = () => {
+    firebase
+      .auth()
+      .signInWithPopup(githubProvider)
+      .then(function (result) {
+        let { displayName, photoURL, email } = result.user;
+        let signedInUser = {
+          isSignedIn: true,
+          email: email,
+          photo: photoURL,
+          name: displayName,
+        };
+        // console.log(result);
+        setUser(signedInUser);
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        // var user = result.user;
+        console.log("After github sign in", result.user);
+        setUser(signedInUser);
+        setLoggedInUser(result.user);
+        history.replace(from);
+        console.log(from);
+        // ...
+      })
+      .catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        console.log(errorCode, errorMessage, email, credential);
+        // ...
+      });
+  };
   return (
     <div style={{ textAlign: "center" }}>
       <SignInForm></SignInForm>
+
       {user.isSignedIn ? (
         <button onClick={handleSignOut}>Sign out</button>
       ) : (
-        <button onClick={handleGoogleSignIn}>Sign in using Google</button>
+        <>
+          <button onClick={handleGoogleSignIn}>Sign in using Google</button>
+          <br />
+          <button onClick={handleGithubSignIn}>Sign in using Github</button>
+          <br />
+          <button onClick={handleFbSignIn}>Sign in using Facebook</button>
+        </>
       )}
 
-      <button onClick={handleFbSignIn}>Sign in using Facebook</button>
-
-      {user.isSignedIn && (
+      {/* {user.isSignedIn && (
         <div>
           <h2>Welcome {user.name}</h2>
           <h4>You're logged in using {user.email}</h4>
           <img style={{ width: "20%" }} src={user.photo} alt="" />
         </div>
-      )}
+      )} */}
     </div>
   );
 }
